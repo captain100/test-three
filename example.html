@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>极客学院的动态例子</title>
+	<script type="text/javascript" src="bower_components/three.js/three.js"></script>
+	<style type="text/css">
+		* {
+			margin:0;
+			padding:0;
+		}
+	</style>
+	<script type="text/javascript">
+		function main() {
+			// 场景
+			var scene = new THREE.Scene()
+			// 相机 透视相机
+			var camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, .1, 1000)
+			// 暄染器
+			var renderer = new THREE.WebGLRenderer()
+
+			renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0))
+
+			renderer.setSize(window.innerWidth, window.innerHeight)
+
+			renderer.shadowMapEnabled = true
+			// planegeometry 定点着色器
+			var planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1)
+			// 材质
+			var planeMaterial = new THREE.MeshLambertMaterial({ color : 0xffffff})
+			var plane = new THREE.Mesh(planeGeometry, planeMaterial)
+
+			plane.receiveShadow = true
+
+			plane.rotation.x = -.5 * Math.PI
+			plane.position.x = 16
+			plane.position.y = 0
+			plane.position.z = 0
+
+			scene.add(plane)
+			// 立方体
+
+			var cubeGeometry = new THREE.BoxGeometry(4, 4, 4)
+			var cubeMaterial = new THREE.MeshLambertMaterial({color: 0x77ffff })
+			var cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+
+			cube.receiveShadow = true
+			cube.position.x = -4
+			cube.position.y = 3
+			cube.position.z = 0
+			scene.add(cube)
+
+			// 圆球体
+			var sphereGeometry = new THREE.SphereGeometry(4, 30, 20)
+			var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 })
+			var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+			sphere.receiveShadow = true
+			sphere.position.x = 20 
+			sphere.position.y = 0 
+			sphere.position.z = 2
+
+			scene.add(sphere)
+
+			// 设置相机位置
+			camera.position.x = -30
+			camera.position.y = 40 
+			camera.position.z = 30
+			//	相机的朝向 
+			camera.lookAt(scene.position)
+
+			// 设置自然光源
+			var ambientLight = new THREE.AmbientLight(0x0c0c0c)
+			scene.add(ambientLight)
+
+			// 点光源
+			var spotLight = new THREE.SpotLight(0xffffff)
+			spotLight.position.set(-40, 60, -10)
+			spotLight.castShadow = true
+			scene.add(spotLight)
+
+			document.body.appendChild(renderer.domElement)
+
+			var dug = 0
+
+			function render() {
+				cube.rotation.x += 0.01
+				cube.rotation.y += 0.01
+				cube.rotation.z += 0.01
+
+				sphere.position.x += 0.03
+				sphere.position.y += 0.03
+
+			
+
+				requestAnimationFrame(render); // setTimeout
+                renderer.render(scene,camera);
+			}
+
+			render()
+		}
+	</script>
+</head>
+<body onload="main()">
+</body>
+</html>
